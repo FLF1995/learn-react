@@ -15,6 +15,34 @@ function Welcome(props) {
 return <h2>Hello, {props.name}</h2>
 }
 
+function Avatar(props) {
+	return (
+		<img className="avatar" src={props.user.avatarUrl} alt={props.user.name}/>
+	)
+}
+function UserInfo(props) {
+	return (
+		<div className="user-info">
+			<Avatar user={props.user} />
+			<div className="user-info-name">{props.user.name}</div>
+		</div>
+	)
+}
+
+function Comment(props) {
+	return (
+    <div className="comment">
+     		<UserInfo user={props.author} />
+        <div className="comment-text">{props.text}</div>
+        <div className="comment-date">{props.date}</div>
+    </div>
+  );
+}
+const author = {
+  name: "flf",
+  avatarUrl: "./logo.svg"
+};
+
 class App extends Component {
   render() {
     return (
@@ -26,6 +54,7 @@ class App extends Component {
           <Welcome name="Sara" />
           <Welcome name="gsm" />
           <Welcome name="flf" />
+          <Comment author={author} text="age"/>
         </div>
       </div>
     );
