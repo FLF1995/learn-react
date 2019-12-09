@@ -44,6 +44,13 @@ const author = {
 };
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+	}
+	componentDidMount() {
+			console.log(this.props.match.params);
+			console.log(this.props.history.location.state);
+	}
   render() {
     return (
       <div className="App">
@@ -54,7 +61,10 @@ class App extends Component {
           <Welcome name="Sara" />
           <Welcome name="gsm" />
           <Welcome name="flf" />
-          <Comment author={author} text="age"/>
+          <Comment author={author} text="age" />
+          <div onClick={() => this.props.history.push("/clock")}>
+            去Clock页面
+          </div>
         </div>
       </div>
     );
