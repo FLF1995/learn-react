@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './layout.css'
 
 export default class MainLayout extends Component {
   render() {
