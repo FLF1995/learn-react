@@ -1,13 +1,15 @@
 import React from 'react'
-import { HashRouter, Route, Switch, hashHistory } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import App from "./pages/App";
 import Clock from "./pages/Clock";
 import Toggle from "./pages/Toggle";
 import Layout from "./MainLayout";
 import LoginControl from "./pages/LoginControl";
 
+const history = createBrowserHistory();
 const BasicRoutes = () => (
-  <HashRouter history={hashHistory}>
+  <HashRouter history={history}>
     <Layout></Layout>
     <Switch>
       <Route exact path="/app/:id" component={App}></Route>
