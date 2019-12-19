@@ -1,0 +1,19 @@
+.login-page {
+	background: #283443;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	.login-title {
+		color: #fff;
+		font-size: 28px;
+		margin-bottom: 20px;
+	}
+	.login-form {
+		width: 30%;
+	}
+	.login-btn {
+		width: 100%;
+	}
+}
