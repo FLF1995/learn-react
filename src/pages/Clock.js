@@ -38,7 +38,7 @@ class Clock extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
+        {/* <div className="App-header">
           <h2>Welcome to React</h2>
           <h2>It is {this.state.date.toLocaleTimeString()}</h2>
           <div
@@ -55,7 +55,7 @@ class Clock extends Component {
           </div>
           <button onClick={this.activateLasers}>Button</button>
 					<ActionLink></ActionLink>
-        </div>
+        </div> */}
       </div>
     );
   }
