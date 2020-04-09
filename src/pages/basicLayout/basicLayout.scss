@@ -1,0 +1,14 @@
+.header {
+	color: #ccc;
+	display: flex;
+	justify-content: space-between;
+	.header-left {
+		margin-left: 15px;
+		flex: 0 0 10%;
+	}
+	.header-right {
+		flex: 0 0 30%;
+		display: flex;
+		justify-content: space-evenly;
+	}
+}
