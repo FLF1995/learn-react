@@ -9,16 +9,7 @@ const history = createBrowserHistory();
 const BasicRoutes = () => (
   <HashRouter history={history}>
     <Switch>
-      <Route
-        path="/index"
-        component={
-          <BasicLayout>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/index" component={Home} />
-            <Route path="/index/home" component={Home} />
-          </BasicLayout>
-        }
-      />
+      <Route path="/index" component={BasicLayout}></Route>
     </Switch>
   </HashRouter>
 );

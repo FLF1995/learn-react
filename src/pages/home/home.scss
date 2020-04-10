@@ -1,0 +1,10 @@
+.welcome-box {
+	padding: 20px;
+	background: rgb(4,33,64);
+	color: #ccc;
+	display: flex;
+	justify-content: space-between;
+	.cursor-pointer {
+		cursor: pointer;
+	}
+}

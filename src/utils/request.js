@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const service = axios.create({
-	baseURL: "http://open.tourdev.cn/api/",
-	timeout: 5000
+  baseURL: "http://192.168.1.116/api/",
+  timeout: 5000,
 });
 
 service.interceptors.request.use(

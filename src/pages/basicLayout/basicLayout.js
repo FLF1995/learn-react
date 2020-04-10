@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Menu, Breadcrumb } from "antd";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -8,6 +9,9 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import "./basicLayout.scss";
+import Home from '../home/home'
+import Notice from "../home/notice";
+import Region from "../user/region"
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -34,7 +38,7 @@ class BasicLayout extends Component {
           <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
             <Menu.Item key="1">
               <PieChartOutlined />
-              <span>主页</span>
+              <a href="#/index/home">主页</a>
             </Menu.Item>
             <SubMenu
               key="sub1"
@@ -45,7 +49,9 @@ class BasicLayout extends Component {
                 </span>
               }
             >
-              <Menu.Item key="3">区域管理</Menu.Item>
+              <Menu.Item key="3">
+                <a href="#/index/user/region">区域管理</a>
+              </Menu.Item>
               <Menu.Item key="4">客户信息管理</Menu.Item>
               <Menu.Item key="5">用户账户管理</Menu.Item>
             </SubMenu>
@@ -100,7 +106,11 @@ class BasicLayout extends Component {
               className="site-layout-background"
               style={{ padding: 24, minHeight: 360 }}
             >
-              {this.props.children}
+              <Switch>
+                <Route path="/index/home" exact component={Home}></Route>
+                <Route path="/index/home/notice" exact component={Notice}></Route>
+                <Route path="/index/user/region" exact component={Region}></Route>
+              </Switch>
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
