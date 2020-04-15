@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import Router from "./Router";
 import './index.css';
 import "antd/dist/antd.css";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/es/locale/zh_CN";
 
 ReactDOM.render(
-	<div>
-		<Router />
-	</div>,
-  document.getElementById('root')
+  <ConfigProvider locale={zhCN}>
+    <Router />
+  </ConfigProvider>,
+  document.getElementById("root")
 );
