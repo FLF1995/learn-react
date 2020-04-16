@@ -12,6 +12,7 @@ import "./basicLayout.scss";
 import Home from '../home/home'
 import Notice from "../home/notice";
 import Region from "../user/region"
+import Customer from "../user/customer";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -52,7 +53,9 @@ class BasicLayout extends Component {
               <Menu.Item key="3">
                 <a href="#/index/user/region">区域管理</a>
               </Menu.Item>
-              <Menu.Item key="4">客户信息管理</Menu.Item>
+              <Menu.Item key="4">
+                <a href="#/index/user/customer">客户信息管理</a>
+              </Menu.Item>
               <Menu.Item key="5">用户账户管理</Menu.Item>
             </SubMenu>
             <SubMenu
@@ -108,8 +111,21 @@ class BasicLayout extends Component {
             >
               <Switch>
                 <Route path="/index/home" exact component={Home}></Route>
-                <Route path="/index/home/notice" exact component={Notice}></Route>
-                <Route path="/index/user/region" exact component={Region}></Route>
+                <Route
+                  path="/index/home/notice"
+                  exact
+                  component={Notice}
+                ></Route>
+                <Route
+                  path="/index/user/region"
+                  exact
+                  component={Region}
+                ></Route>
+                <Route
+                  path="/index/user/customer"
+                  exact
+                  component={Customer}
+                ></Route>
               </Switch>
             </div>
           </Content>
