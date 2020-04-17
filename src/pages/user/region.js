@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Tabs, Input, Button, Table, Pagination, Form, Cascader, Select, message } from "antd";
+import { Cascader, Tabs, Input, Button, Table, Pagination, Form, Select, message } from "antd";
 import "./user.scss";
 import '../../pages/common.scss'
-import { searchRegion, getArea, addNewArea } from "../../api/user/region";
+import { searchRegion, addNewArea } from "../../api/user/region";
+import RegionCascader from "../../components/regionCascader"
 
 const { TabPane } = Tabs;
 
@@ -23,14 +24,13 @@ class Region extends Component {
       pageSize: 10,
       totalNum: null,
       search: "",
-      areaOptions: [],
       defaultActiveKey: "1",
+      regionValues: []
     };
   }
 
   componentDidMount() {
     this.getRegionData(1, 10);
-    this.getAreaData(10000000, 1);
   }
 
   //表单
@@ -47,10 +47,11 @@ class Region extends Component {
       form.resetFields();
     };
     const onFinish = (values) => {
+			console.log(values)
       const params = {
         name: values.name,
         type: values.type,
-        parentCode: values.region[values.region.length - 1],
+        parentCode: this.state.regionValues[this.state.regionValues.length - 1],
         remark: values.remark,
       };
       addNewArea(params).then((res) => {
@@ -61,23 +62,17 @@ class Region extends Component {
           form.resetFields();
         }, 1000);
       });
-		};
-		
+    };
+
     const { Option } = Select;
     function handleChange(value) {
       console.log(`selected ${value}`);
-    }
-
-    const loadAreaData = (selectedOptions) => {
-      if (selectedOptions.length == 1) {
-        const targetOption2 = selectedOptions[selectedOptions.length - 1];
-        targetOption2.loading = true;
-        this.getAreaData(selectedOptions[0].value, 2, targetOption2);
-      } else if (selectedOptions.length == 2) {
-        const targetOption3 = selectedOptions[selectedOptions.length - 1];
-        this.getAreaData(selectedOptions[1].value, 3, targetOption3);
+		}
+		const checkRegion = (rule, value) => {
+			if (this.state.regionValues.length == 0) {
+				return Promise.reject("请选择区域");
       }
-    };
+		};
 
     return (
       <Form
@@ -94,13 +89,9 @@ class Region extends Component {
         <Form.Item
           label="选择地区"
           name="region"
-          rules={[{ required: true, message: "请选择地区" }]}
+          rules={[{ validator: checkRegion }]}
         >
-          <Cascader
-            options={this.state.areaOptions}
-            loadData={loadAreaData}
-            changeOnSelect
-          />
+          <RegionCascader parent={this}></RegionCascader>
         </Form.Item>
 
         <Form.Item
@@ -129,8 +120,14 @@ class Region extends Component {
         </Form.Item>
 
         <Form.Item {...this.tailLayout}>
-          <Button type="primary" htmlType="立即创建"> 立即创建 </Button>
-          <Button htmlType="重置" onClick={onReset}>  重置 </Button>
+          <Button type="primary" htmlType="立即创建">
+            {" "}
+            立即创建{" "}
+          </Button>
+          <Button htmlType="重置" onClick={onReset}>
+            {" "}
+            重置{" "}
+          </Button>
         </Form.Item>
       </Form>
     );
@@ -163,51 +160,6 @@ class Region extends Component {
     this.setState({ pageSize: size });
     this.getRegionData(this.state.pageNo, size);
   }
-  //获取省市区级联数据
-  getAreaData(code, level, targetOption) {
-    const params = { code: code };
-    getArea(params).then((res) => {
-      switch (level) {
-        case 1:
-          this.setState({
-            areaOptions: res.data.data.map((item) => {
-              return {
-                value: item.code,
-                label: item.name,
-                isLeaf: false,
-              };
-            }),
-          });
-          break;
-        case 2:
-          targetOption.loading = false;
-          targetOption.children = res.data.data.map((item) => {
-            return {
-              value: item.code,
-              label: item.name,
-              isLeaf: false,
-            };
-          });
-          this.setState({
-            options: [...this.state.areaOptions],
-          });
-          break;
-        case 3:
-          targetOption.children = res.data.data.map((item) => {
-            return {
-              value: item.code,
-              label: item.name,
-              isLeaf: true,
-            };
-          });
-          this.setState({
-            options: [...this.state.areaOptions],
-          });
-        default:
-          break;
-      }
-    });
-  }
   changeInput(e) {
     this.setState({ search: e.target.value });
   }
@@ -218,16 +170,29 @@ class Region extends Component {
     this.setState({ defaultActiveKey: key });
   }
 
+  getRegionValues(result, values) {
+		this.setState({ regionValues: values });
+  } 
+
   render() {
     return (
       <div className="common-page-layout">
         <div className="title"> 区域管理 </div>
-        <Tabs activeKey={this.state.defaultActiveKey} onChange={this.callback.bind(this)}>
+        <Tabs
+          activeKey={this.state.defaultActiveKey}
+          onChange={this.callback.bind(this)}
+        >
           <TabPane tab="区域查询" key="1">
             <div className="search-bar">
               <span>关键字：</span>
-              <Input onChange={this.changeInput.bind(this)} placeholder="请输入" />
-              <Button type="primary" onClick={this.search.bind(this)}> 查询 </Button>
+              <Input
+                onChange={this.changeInput.bind(this)}
+                placeholder="请输入"
+              />
+              <Button type="primary" onClick={this.search.bind(this)}>
+                {" "}
+                查询{" "}
+              </Button>
             </div>
             <div className="search-result">
               查询结果：共查到 {this.state.totalNum} 条相关信息！
