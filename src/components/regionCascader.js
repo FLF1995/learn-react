@@ -65,21 +65,17 @@ class RegionCascader extends Component {
     }
   };
 
-  onChange(values) {
-		console.log("values", values);
-    this.props.parent.getRegionValues(this, values);
-  }
-
   componentDidMount() {
     this.getAreaData(10000000, 1);
   }
 
   render() {
+		console.log('this.props.value', this.props.value)
     return (
 			<Cascader
 				options={this.state.areaOptions}
 				loadData={this.loadAreaData}
-				onChange={this.onChange.bind(this)}
+				onChange={this.props.onChange}
 			/>
     );
   }

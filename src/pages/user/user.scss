@@ -1,0 +1,26 @@
+.region {
+		.ant-input {
+			width: 20%;
+		}
+		.ant-btn {
+			margin-left: 20px;
+		}
+	}
+
+.customer {
+	.ant-select {
+		width: 150px;
+		margin-right: 20px;
+	}
+	.search-item {
+		display: flex;
+		align-items: center;
+		span {
+			flex: 0 0 30%;
+			margin-left: 20px;
+		}
+	}
+	.ant-btn {
+		margin-left: 20px;
+	}
+}

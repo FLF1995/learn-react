@@ -6,6 +6,7 @@ import { searchRegion, addNewArea } from "../../api/user/region";
 import RegionCascader from "../../components/regionCascader"
 
 const { TabPane } = Tabs;
+const { Option } = Select;
 
 const columns = [
   { title: "省", dataIndex: "province", key: "province" },
@@ -40,97 +41,6 @@ class Region extends Component {
   };
   tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
-  };
-  RegionForm = () => {
-    const [form] = Form.useForm();
-    const onReset = () => {
-      form.resetFields();
-    };
-    const onFinish = (values) => {
-			console.log(values)
-      const params = {
-        name: values.name,
-        type: values.type,
-        parentCode: this.state.regionValues[this.state.regionValues.length - 1],
-        remark: values.remark,
-      };
-      addNewArea(params).then((res) => {
-        message.success("新增成功");
-        setTimeout(() => {
-          this.setState({ defaultActiveKey: "1" });
-          this.getRegionData(1, 10);
-          form.resetFields();
-        }, 1000);
-      });
-    };
-
-    const { Option } = Select;
-    function handleChange(value) {
-      console.log(`selected ${value}`);
-		}
-		const checkRegion = (rule, value) => {
-			if (this.state.regionValues.length == 0) {
-				return Promise.reject("请选择区域");
-      }
-		};
-
-    return (
-      <Form
-        {...this.layout}
-        name="basic"
-        form={form}
-        initialValues={{ country: "中国" }}
-        onFinish={onFinish}
-      >
-        <Form.Item label="国家" name="country">
-          <Input disabled />
-        </Form.Item>
-
-        <Form.Item
-          label="选择地区"
-          name="region"
-          rules={[{ validator: checkRegion }]}
-        >
-          <RegionCascader parent={this}></RegionCascader>
-        </Form.Item>
-
-        <Form.Item
-          label="区域类型"
-          name="type"
-          rules={[{ required: true, message: "请选择区域类型" }]}
-        >
-          <Select placeholder="请选择区域类型" onChange={handleChange}>
-            <Option value="4">村庄</Option>
-            <Option value="5">街道/乡镇</Option>
-            <Option value="6">片区</Option>
-            <Option value="7">其他</Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label="区域名称"
-          name="name"
-          rules={[{ required: true, message: "请填写地区名称" }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="备注说明" name="remark">
-          <Input type="textarea" />
-        </Form.Item>
-
-        <Form.Item {...this.tailLayout}>
-          <Button type="primary" htmlType="立即创建">
-            {" "}
-            立即创建{" "}
-          </Button>
-          <Button htmlType="重置" onClick={onReset}>
-            {" "}
-            重置{" "}
-          </Button>
-        </Form.Item>
-      </Form>
-    );
   };
 
   //获取区域表格数据
@@ -170,14 +80,113 @@ class Region extends Component {
     this.setState({ defaultActiveKey: key });
   }
 
-  getRegionValues(result, values) {
+  getRegionValues(values) {
 		this.setState({ regionValues: values });
-  } 
+	}
+
+	onFinish = values => {
+		console.log('values', values)
+		const params = {
+			name: values.name,
+			type: values.type,
+			parentCode: values.region[values.region.length - 1],
+			remark: values.remark,
+		};
+		addNewArea(params).then((res) => {
+			message.success("新增成功");
+			setTimeout(() => {
+				this.setState({ defaultActiveKey: "1" });
+				this.getRegionData(1, 10);
+				this.formRef.current.resetFields();
+			}, 1000);
+		});
+	}
+
+	onFinishFailed = values => {
+		console.log('onFinishFailed', values)
+	}
+
+	onReset = () => {
+		this.formRef.current.resetFields();
+	};
+
+	handleChange = (value)=> {
+		console.log(`selected ${value}`);
+	}
+
+	formRef = React.createRef();
+	
+	renderMyForm = () => {
+		return (
+			<Form
+				{...this.layout}
+				ref={this.formRef}
+				name="basic"
+				initialValues={{ country: "中国" }}
+				onFinish={this.onFinish}
+				onFinishFailed={this.onFinishFailed}
+			>
+				<Form.Item label="国家" name="country">
+					<Input disabled />
+				</Form.Item>
+
+				<Form.Item
+					label="选择地区"
+					name="region"
+					rules={[{ required: true }]}
+				>
+					<RegionCascader />
+				</Form.Item>
+
+				<Form.Item
+					label="区域类型"
+					name="type"
+					rules={[{ required: true, message: "请选择区域类型" }]}
+				>
+					<Select placeholder="请选择区域类型" onChange={this.handleChange}>
+						<Option value="4">村庄</Option>
+						<Option value="5">街道/乡镇</Option>
+						<Option value="6">片区</Option>
+						<Option value="7">其他</Option>
+					</Select>
+				</Form.Item>
+
+				<Form.Item
+					label="区域名称"
+					name="name"
+					rules={[{ required: true, message: "请填写地区名称" }]}
+				>
+					<Input />
+				</Form.Item>
+
+				<Form.Item label="备注说明" name="remark">
+					<Input type="textarea" />
+				</Form.Item>
+
+				<Form.Item>
+					<Button type="primary" htmlType="submit">
+						{" "}
+            立即创建{" "}
+					</Button>
+					<Button htmlType="重置" onClick={this.onReset}>
+						{" "}
+            重置{" "}
+					</Button>
+				</Form.Item>
+			</Form>
+		)
+	}
+
+	handleClick(e) {
+		console.log('handleClick', e)
+		console.log('this', this)
+	}
 
   render() {
     return (
-      <div className="common-page-layout">
+      <div className="common-page-layout region">
         <div className="title"> 区域管理 </div>
+				
         <Tabs
           activeKey={this.state.defaultActiveKey}
           onChange={this.callback.bind(this)}
@@ -213,7 +222,7 @@ class Region extends Component {
           </TabPane>
 
           <TabPane tab="区域添加" key="2">
-            <this.RegionForm></this.RegionForm>
+						{this.renderMyForm()}
           </TabPane>
         </Tabs>
       </div>
