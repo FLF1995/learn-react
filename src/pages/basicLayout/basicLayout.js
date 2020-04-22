@@ -13,6 +13,7 @@ import Home from '../home/home'
 import Notice from "../home/notice";
 import Region from "../user/region"
 import Customer from "../user/customer";
+import AddOrEditCustomer from "../user/component/AddOrEditCustomer"
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -111,21 +112,10 @@ class BasicLayout extends Component {
             >
               <Switch>
                 <Route path="/index/home" exact component={Home}></Route>
-                <Route
-                  path="/index/home/notice"
-                  exact
-                  component={Notice}
-                ></Route>
-                <Route
-                  path="/index/user/region"
-                  exact
-                  component={Region}
-                ></Route>
-                <Route
-                  path="/index/user/customer"
-                  exact
-                  component={Customer}
-                ></Route>
+                <Route path="/index/home/notice" exact component={Notice}></Route>
+                <Route path="/index/user/region" exact component={Region}></Route>
+								<Route path="/index/user/customer" exact component={Customer}></Route>
+								<Route path="/index/user/customer/add-or-edit" exact component={AddOrEditCustomer}></Route>
               </Switch>
             </div>
           </Content>
